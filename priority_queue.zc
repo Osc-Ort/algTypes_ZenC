@@ -29,11 +29,10 @@ impl priority_queue<T> {
 
     @inline
     fn pop(self) -> T {
-        let elem = self.top();
         self.__swap_prior(0,self.length()-1);
-        self.__elems.pop();
-        self.__sink(0);
-        return elem;
+        // To not make doble copy of the last element
+        defer self.__sink(0);
+        return self.__elems.pop();;
     }
 
     fn append(self, elems: Vec<T>) {

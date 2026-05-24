@@ -106,9 +106,7 @@ impl priority_queue<T> {
 
     @inline
     fn __swap_prior(self,a: usize,b: usize) {
-        let aux = self.__elems[a];
-        self.__elems.set(a,self.__elems[b]);
-        self.__elems.set(b,aux);
+        swap<T>(self.__elems.get_ref(a),self.__elems.get_ref(b));
     }
 }
 

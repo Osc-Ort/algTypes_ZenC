@@ -1,6 +1,7 @@
 import "std/vec.zc"
 import "std/mem.zc"
 
+// T only needs to implement operator<
 struct priority_queue<T> {
     __elems: Vec<T>;
     minHeap: bool;
@@ -100,7 +101,7 @@ impl priority_queue<T> {
     // Comps: return if a have to float
     @inline
     fn __comp(self,a: usize,b: usize) -> bool {
-        return self.minHeap ? self.__elems[a] < self.__elems[b] : self.__elems[b] < self.__elems[a];
+        return self.minHeap ? *self.__elems.get_ref(a) < *self.__elems.get_ref(b) : *self.__elems.get_ref(b) < *self.__elems.get_ref(a);
     }
 
     @inline

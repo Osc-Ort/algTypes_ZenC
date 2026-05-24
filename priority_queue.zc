@@ -1,0 +1,38 @@
+import "std/vec.zc"
+
+struct priority_queue<T> {
+    __elems: Vec<T>;
+    minHeap: bool;
+}
+
+impl priority_queue<T> {
+
+    @inline
+    fn new(minHeap: bool = false) -> Self<T> {
+        return priority_queue<T>{__elems: Vec<T> {data: NULL,len: 0,cap: 0}, minHeap: minHeap};
+    }
+
+    fn push(self,elem: T) {
+        if self.is_empty() {
+            self.__elems.push(elem);
+        }
+    }
+
+    @inline
+    fn is_empty(self) -> bool {
+        return self.__elems.is_empty();
+    }
+
+
+    // This functions doenst said there exist, only for arimetic
+    @inline 
+    fn __father(self,ind: usize) -> usize {
+        return ind >> 1;
+    } 
+
+    @inline
+    fn __sons(self,ind: usize) -> (usize,usize) {
+        ind <<= 1;
+        return (ind,ind+1);
+    }
+}

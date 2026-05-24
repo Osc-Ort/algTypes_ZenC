@@ -1,0 +1,10 @@
+import "priority_queue.zc"
+
+fn main() {
+    "Hello world\n";
+    let a = priority_queue<i32>::new();
+    "{a.is_empty()}";
+    a.push(10);
+    "{a.is_empty()}";
+    "{a.__sons(5).1}";
+}

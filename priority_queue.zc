@@ -52,6 +52,11 @@ impl priority_queue<T> {
         return self.__elems.length();
     }
 
+    @inline
+    fn clear(self) {
+        self.__elems.clear();
+    }
+
 
     // This functions doenst said there exist, only for arimetic
     @inline 

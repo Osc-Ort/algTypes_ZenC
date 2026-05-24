@@ -1,5 +1,21 @@
 import "priority_queue.zc"
 
+import "std/random.zc"
+
+fn knuth_shuffle<T>(a: Vec<T>, len: usize) -> Vec<i32> {
+    let rng = Random::new();
+    for let i: usize = len - 1; i >= 1; --i {
+        let j = rng.next_int_range(0, i);
+        if j != i {
+            let t = a[i];
+            a.set(i,a[j]);
+            a.set(j, t);
+        }
+    }
+    return a;
+}
+
+
 fn main() {
     // minheap
     let q = priority_queue<i32>::new(true);
@@ -9,8 +25,21 @@ fn main() {
     }
     "Los cuadrados de los numeros del 1 al {limit}:";
     while !q.is_empty() {
-        "{q.top()} "..;
-        q.pop();
+        "{q.pop()} "..;
+    }
+    ""
+    "Ahora vamos a probar con desordenados, debería ser mismo resultado:";
+    let v = Vec<i32>::with_capacity(limit+1);
+    for i in 1..=limit {
+        v.push(i**2);
+    }
+    v = knuth_shuffle<i32>(v.clone(),v.length());
+    q.clear();
+    for x in v {
+        q.push(x);
+    }
+    while !q.is_empty() {
+        "{q.pop()} "..;
     }
     ""
 }

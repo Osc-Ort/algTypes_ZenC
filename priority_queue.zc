@@ -1,4 +1,5 @@
 import "std/vec.zc"
+import "std/mem.zc"
 
 struct priority_queue<T> {
     __elems: Vec<T>;
@@ -9,18 +10,46 @@ impl priority_queue<T> {
 
     @inline
     fn new(minHeap: bool = false) -> Self<T> {
-        return priority_queue<T>{__elems: Vec<T> {data: NULL,len: 0,cap: 0}, minHeap: minHeap};
+        return priority_queue<T>{
+            __elems: Vec<T> {data: NULL,len: 0,cap: 0}, 
+            minHeap: minHeap
+        };
     }
 
+    @inline
+    fn top(self) -> T {
+        return self.__elems.first();
+    }
+
+    @inline
     fn push(self,elem: T) {
-        if self.is_empty() {
-            self.__elems.push(elem);
+        self.__elems.push(elem);
+        self.__float(self.__elems.length()-1);
+    }
+
+    @inline
+    fn pop(self) -> T {
+        let elem = self.top();
+        self.__swap_prior(0,self.length()-1);
+        self.__elems.pop();
+        self.__sink(0);
+        return elem;
+    }
+
+    fn append(self, elems: Vec<T>) {
+        for x in elems {
+            self.push(x);
         }
     }
 
     @inline
     fn is_empty(self) -> bool {
         return self.__elems.is_empty();
+    }
+
+    @inline
+    fn length(self) -> usize {
+        return self.__elems.length();
     }
 
 
@@ -34,5 +63,55 @@ impl priority_queue<T> {
     fn __sons(self,ind: usize) -> (usize,usize) {
         ind <<= 1;
         return (ind,ind+1);
+    }
+
+    fn __float(self,ind: usize) {
+        if ind == 0 {return;}
+        let father = self.__father(ind);
+        if self.__comp(ind,father) {
+            self.__swap_prior(ind,father);
+            self.__float(father);
+        }
+    }
+
+    fn __sink(self,ind: usize) {
+        let (h1,h2) = self.__sons(ind);
+        if h1 >= self.length() {return;}
+        if h2 >= self.length() {
+            if self.__comp(h1,ind) {
+                self.__swap_prior(h1,ind);
+            }
+            return;
+        }
+        let hC = if self.__comp(h1,h2) {
+            h1
+        } else {
+            h2
+        };
+        if !self.__comp(hC,ind) {return;}
+        self.__swap_prior(hC,ind);
+        self.__sink(hC);
+    }
+
+    // Comps: return if a have to float
+    @inline
+    fn __comp(self,a: usize,b: usize) -> bool {
+        return self.minHeap ? self.__elems[a] < self.__elems[b] : self.__elems[b] < self.__elems[a];
+    }
+
+    @inline
+    fn __swap_prior(self,a: usize,b: usize) {
+        let aux = self.__elems[a];
+        self.__elems.set(a,self.__elems[b]);
+        self.__elems.set(b,aux);
+    }
+}
+
+impl Clone for priority_queue<T> {
+    fn clone(self) -> priority_queue<T> {
+        return priority_queue<T> {
+            __elems: self.__elems.clone(),
+            minHeap: self.minHeap
+        };
     }
 }

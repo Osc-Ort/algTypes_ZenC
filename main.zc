@@ -1,10 +1,16 @@
 import "priority_queue.zc"
 
 fn main() {
-    "Hello world\n";
-    let a = priority_queue<i32>::new();
-    "{a.is_empty()}";
-    a.push(10);
-    "{a.is_empty()}";
-    "{a.__sons(5).1}";
+    // minheap
+    let q = priority_queue<i32>::new(true);
+    let limit = 10;
+    for i in 1..=limit {
+        q.push(i**2);
+    }
+    "Los cuadrados de los numeros del 1 al {limit}:";
+    while !q.is_empty() {
+        "{q.top()} "..;
+        q.pop();
+    }
+    ""
 }

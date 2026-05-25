@@ -71,7 +71,7 @@ impl priority_queue<T> {
     }
 
     fn __float(self,ind: usize) {
-        if ind == 0 {return;}
+        if ind == 0 return;
         let father = self.__father(ind);
         if self.__comp(ind,father) {
             self.__swap_prior(ind,father);
@@ -81,19 +81,14 @@ impl priority_queue<T> {
 
     fn __sink(self,ind: usize) {
         let (h1,h2) = self.__sons(ind);
-        if h1 >= self.length() {return;}
+        if h1 >= self.length() return;
         if h2 >= self.length() {
-            if self.__comp(h1,ind) {
+            if self.__comp(h1,ind) 
                 self.__swap_prior(h1,ind);
-            }
             return;
         }
-        let hC = if self.__comp(h1,h2) {
-            h1
-        } else {
-            h2
-        };
-        if !self.__comp(hC,ind) {return;}
+        let hC = self.__comp(h1,h2) ? h1 : h2;
+        if !self.__comp(hC,ind) return;
         self.__swap_prior(hC,ind);
         self.__sink(hC);
     }

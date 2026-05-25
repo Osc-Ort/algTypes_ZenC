@@ -1,4 +1,5 @@
 import "priority_queue.zc"
+import "dsu.zc"
 import "std/random.zc"
 
 fn knuth_shuffle<T>(a: Vec<T>, len: usize) -> Vec<i32> {
@@ -47,4 +48,14 @@ fn main() {
         "{q.pop()} "..;
     }
     "";
+
+    let ds = dsu::new(3);
+    "Tiene que ser el primero true y el segundo false: "
+    "{ds.unite(0,1)} "..;
+    "{ds.unite(0,1)}";
+    for x in &ds.__father {
+        "{*x} "..
+    }
+    ""
+    "{ds.distint()}"
 }

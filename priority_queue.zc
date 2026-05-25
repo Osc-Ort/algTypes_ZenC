@@ -33,7 +33,7 @@ impl priority_queue<T> {
         self.__swap_prior(0,self.length()-1);
         // To not make doble copy of the last element
         defer self.__sink(0);
-        return self.__elems.pop();;
+        return self.__elems.pop();
     }
 
     fn append(self, elems: Vec<T>) {

@@ -1,0 +1,49 @@
+import "std/vec.zc"
+
+// O(1) amortized in find and unite
+struct dsu {
+    __father: Vec<usize>;
+    __num_dist: usize;
+}
+
+impl dsu {
+
+    fn new(numElems: usize) -> Self {
+        let v = Vec<usize>::with_capacity(numElems);
+        for i in 0..numElems {
+            v.push(i)
+        }
+        return dsu {
+            __father: v,
+            __num_dist: numElems,
+        };
+    }
+
+    fn find(self,a: usize) -> usize {
+        let f = self.__father[a];
+        while self.__father[f] != f {
+            f = self.__father[f];
+        }
+        while self.__father[a] != a {
+            let aux = self.__father[a];
+            self.__father.set(a,f);
+            a = aux;
+        }
+        return f;
+    }
+
+    fn unite(self,a: usize,b: usize) -> bool {
+        let pA = self.find(a);
+        let pB = self.find(b);
+        if pA == pB {
+            return false;
+        }
+        self.__father.set(pA,pB);
+        self.__num_dist -= 1;
+        return true;
+    }
+
+    fn distint(self) -> usize {
+        return self.__num_dist;
+    }
+}

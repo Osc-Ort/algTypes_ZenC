@@ -47,3 +47,12 @@ impl dsu {
         return self.__num_dist;
     }
 }
+
+impl Clone for dsu {
+    fn clone(self) -> dsu {
+        return dsu {
+            __father: self.__father.clone(),
+            __num_dist: self.__num_dist
+        };
+    }
+}
